@@ -1,0 +1,86 @@
+FORMULAIRE
+inscription/connexion
+
+
+
+Création de base de 10 personnages
+
+-> Nom 
+-> PV
+-> Force d'attaque ? valeur 0 et changement à chaque lancement de dés 
+points d'attaque -> force * valeur dés
+
+pv stockés dans une variable qui va baisser à chaque action de dégâts 
+comme ça on fait une seule requette une fois pv = à 0
+
+class PERSONNAGE
+Nom 
+pv number 100
+force d'attaque
+PA (points d'action) number
+METHODES DU PERSONNAGE
+-> attaquer
+-> recevoir
+
+Class Database -> 
+1ère méthode --> connect
+-> creation
+-> read ()
+-> update
+-> delete
+
+class Dé
+méthode lancer -> Dé
+renvoie un aléatoire entre 1 et 6
+[fonction php] --> rand() 
+
+
+Logique de l'application
+
+1 - Accueil --> formulaire de connexion/inscription
+Bouton Créer
+ou CHOISIR   --> afficher liste des personnages
+new Personnage("")
+méthode get
+nom, pv 100
+
+la méthode UNIQUE dans la création de la table
+
+action renvoie sur  "select adversaire .php"
+
+--> cette page : liste des ennemis à abattre
+
+
+au clic on est emmenés sur une page avec les 2 personnages
+page combat.php
+
+Lancement dé sur chaque personnage pour définir force de base
+
+Ennemi --> easy / medium / hard
+
+Connecter
+
+Est-ce qu'un utilisateur a plusieurs personnages
+afficher la liste des autres personnages 
+
+RESUME
+
+index.php
+adversaire.php
+combat
+
+class Personnage ()
+--> attaquer
+--> recevoir
+class Database ()
+--> connexion
+--> créer un personnage
+--> read (personnage principal + liste adversaires)
+--> update personnages (liste adversaires)
+--> delete un personnage (défaite) 
+class Dice ()
+--> lancé Dé 
+
+BDD -> 1 table 
+
+
