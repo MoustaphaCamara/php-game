@@ -2,20 +2,25 @@
 class Personnage
 {
     public string $nom;
-    public int $pv;
-    public int $power;
-    public int $pa;
+    public INT $PV;
+    public INT $power;
+    public string $PA;
 
-
-    public function __construct(string $nom)
+    public function __construct(string $nom, INT $PV, INT $power, INT $PA)
     {
         $this->nom = $nom;
+        $this->PV = $PV;
+        $this->power = $power;
+        $this->PA = $PA;
     }
 
-    public function attack()
+    public function attack($launch): int
     {
+        return $this->power * $launch;
     }
-    public function receive()
+
+    public function subirDegats($attaque): int
     {
+        return $this->PV -= $attaque;
     }
 }

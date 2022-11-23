@@ -8,7 +8,9 @@ $database = new Database("localhost", "combat", "root", "");
 $database->connect();
 $database->prepReq("SELECT * FROM personnage");
 $listOfCharacters = $database->fetchData();
-@$newPlayer = $_GET['new-player'];
+if (isset($_GET['new-player'])) {
+    $newPlayer = $_GET['new-player'];
+}
 
 ?>
 
@@ -29,11 +31,10 @@ $listOfCharacters = $database->fetchData();
         <input type="text" name="new-player">
         <input type="submit" value="Créer ton personnage">
         <?php
-        $database->prepReq("INSERT INTO personnage (nom, PV, power, PA) VALUES $newPlayer'(',100, 0, 0)");
-        ?>
-        <!--         if (isset($_newPlayer)) {
+        if (isset($newPlayer)) {
             $database->prepReq("INSERT INTO personnage (nom, PV, power, PA) VALUES ('$newPlayer',100, 0, 0)");
-        } -->
+        }
+        ?>
     </form>
     <p class="or">OR</p>
 
@@ -60,24 +61,32 @@ $listOfCharacters = $database->fetchData();
 
         <div class="fighter-left">
             <h2>PLAYER</h2>
-            <?= "<h3 class='style-player'>" . @$_GET['player'] . "</h3>"; ?>
-            <?php
-            $playerInfos = $database->prepReq("SELECT * FROM personnage WHERE nom LIKE '" . @$_GET['player'] . "'");
-            $playerInfos = $database->fetchData();
-            foreach ($playerInfos as $infoPlayer) {
+            <?php if (isset($GET['player'])) {
+                echo "<h3 class='style-player'>" . $_GET['player'] . "</h3>";
+                $playerInfos = $database->prepReq("SELECT * FROM personnage WHERE nom LIKE '" . $_GET['player'] . "'");
+                $playerInfos = $database->fetchData();
+                foreach ($playerInfos as $infoPlayer) {
+                }
+                $player = $infoPlayer[1];
+                $playerPV = $infoPlayer[2];
+                $playerPower = $infoPlayer[3];
+                $playerPower = $dice->launchDice();
             }
-            ?>
-            <?php
             ?>
         </div>
         <img class="vs" src="assets/img/versus.png">
         <div class="fighter-right">
             <h2>ENEMY</h2>
-            <?php echo "<h3 class='style-enemy'>" . @$_GET['enemy'] . "</h3>"; ?>
-            <?php
-            $enemyInfos = $database->prepReq("SELECT * FROM personnage WHERE nom LIKE '" . @$_GET['enemy'] . "'");
-            $enemyInfos = $database->fetchData();
-            foreach ($enemyInfos as $infoEnemy) {
+            <?php if (isset($GET['enemy'])) {
+                echo "<h3 class='style-enemy'>" . $_GET['enemy'] . "</h3>";
+                $enemyInfos = $database->prepReq("SELECT * FROM personnage WHERE nom LIKE '" . $_GET['enemy'] . "'");
+                $enemyInfos = $database->fetchData();
+                foreach ($enemyInfos as $infoEnemy) {
+                }
+                $enemy = $infoEnemy[1];
+                $enemyPV = $infoEnemy[2];
+                $enemyPower = $infoEnemy[3];
+                $enemyPower = $dice->launchDice();
             }
             ?>
             <?php
@@ -89,15 +98,7 @@ $listOfCharacters = $database->fetchData();
     </div>
 
     <?php
-    // DECLARATION GLOBALE DES INFOS
-    $player = $GLOBALS['infoPlayer'][1];
-    $playerPV = $GLOBALS['infoPlayer'][2];
-    $playerPower = $GLOBALS['infoPlayer'][3];
-    $enemy = $GLOBALS['infoEnemy'][1];
-    $enemyPV = $GLOBALS['infoEnemy'][2];
-    $enemyPower = $GLOBALS['infoEnemy'][3];
-    $playerPower = $dice->launchDice();
-    $enemyPower = $dice->launchDice();
+
     ?>
     <div class="fighting-container">
 
@@ -105,7 +106,7 @@ $listOfCharacters = $database->fetchData();
 
 
         if (isset($_GET['player']) &&  isset($_GET['enemy'])) {
-
+            $playerPower = $dice->launchDice();
             echo "$player possède $playerPV points de vie et a $playerPower de power. $enemy possède $enemyPV points de vie et a $enemyPower de power.<br>";
             if ($playerPower === $enemyPower) {
                 echo "Ils ont la même force. <br> Ils se serrent la main et vont boire un coup. <br> SUS A LA VIOLENCE !!! <img style='width:200px' src='https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Beer_mug_transparent.png/1024px-Beer_mug_transparent.png' alt='DRUNK MADAFAKA'/>";
@@ -151,7 +152,6 @@ $listOfCharacters = $database->fetchData();
                     echo "$enemy a $enemyPV PV <br>";
                 }
             };
-
             if ($playerPv <= 0) {
                 $database->prepReq("DELETE FROM personnage WHERE nom = '$player' ");
                 echo "$player est mort !";

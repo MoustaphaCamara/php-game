@@ -2,11 +2,9 @@
 
 class dice
 {
-    public int $number;
 
-    public function __construct(int $number)
+    public function __construct()
     {
-        $this->number = $number;
     }
     public function launchDice()
     {

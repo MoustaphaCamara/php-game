@@ -7,10 +7,6 @@ class Database
     public string $dbName;
     public PDOStatement $request;
     public PDO $connexion;
-    public int $pv = 100;
-    public int $force = 0;
-    public int $pa = 0;
-
 
     public function __construct(string $host, string $dbName, string $user, string $password)
     {
@@ -32,7 +28,6 @@ class Database
         );
         return $this->connexion;
     }
-
     public function prepReq(string $query, array $array = []): PDOStatement
     {
         $this->request = $this->connexion->prepare($query);
@@ -41,12 +36,29 @@ class Database
     }
 
 
+    public function create(string $name,  array $array = []): PDOStatement
+    {
+        $this->request = $this->connexion->prepare("INSERT INTO personnage (nom, PV, power, PA) VALUES ('$name',100, 0, 0)");
+        $this->request->execute($array);
+        return $this->request;
+    }
+
+    public function read(string $name, array $array = []): PDOStatement
+    {
+        $this->request = $this->connexion->prepare("SELECT * FROM personnage WHERE nom LIKE '$name'");
+        $this->request->execute($array);
+        return $this->request;
+    }
+
+    public function delete(string $name, array $array = []): PDOStatement
+    {
+        $this->request = $this->connexion->prepare("DELETE FROM personnage WHERE nom LIKE '$name' ");
+        $this->request->execute($array);
+        return $this->request;
+    }
+
     public function fetchData()
     {
         return  $this->request->fetchAll();
     }
-    // public function createPerso($pseudo, int $pv, int $force, int $pa)
-    // {
-    //     // exe requete       
-    // }
 }
